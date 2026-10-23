@@ -1,0 +1,203 @@
+% Template for Elsevier CRC journal article
+% version 1.2 dated 09 May 2011
+
+% This file (c) 2009-2011 Elsevier Ltd.  Modifications may be freely made,
+% provided the edited file is saved under a different name
+
+% This file contains modifications for Procedia Computer Science
+
+% Changes since version 1.1
+% - added "procedia" option compliant with ecrc.sty version 1.2a
+%   (makes the layout approximately the same as the Word CRC template)
+% - added example for generating copyright line in abstract
+
+%-----------------------------------------------------------------------------------
+
+%% This template uses the elsarticle.cls document class and the extension package ecrc.sty
+%% For full documentation on usage of elsarticle.cls, consult the documentation "elsdoc.pdf"
+%% Further resources available at http://www.elsevier.com/latex
+
+%-----------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                          %%
+%% Important note on usage                                  %%
+%% -----------------------                                  %%
+%% This file should normally be compiled with PDFLaTeX      %%
+%% Using standard LaTeX should work but may produce clashes %%
+%%                                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The '3p' and 'times' class options of elsarticle are used for Elsevier CRC
+%% The 'procedia' option causes ecrc to approximate to the Word template
+\documentclass[3p,times,procedia]{elsarticle}
+\flushbottom
+
+%% The `ecrc' package must be called to make the CRC functionality available
+\usepackage{ecrc}
+\usepackage[bookmarks=false]{hyperref}
+    \hypersetup{colorlinks,
+      linkcolor=blue,
+      citecolor=blue,
+      urlcolor=blue}
+%\usepackage{amsmath}
+
+
+%% The ecrc package defines commands needed for running heads and logos.
+%% For running heads, you can set the journal name, the volume, the starting page and the authors
+
+
+%% set the starting page if not 1
+\firstpage{1}
+
+
+%% Give the author list to appear in the running head
+%% Example \runauth{C.V. Radhakrishnan et al.}
+\runauth{Ștefan-Lucian Grămadă}
+
+
+
+%% Hereafter the template follows `elsarticle'.
+%% For more details see the existing template files elsarticle-template-harv.tex and elsarticle-template-num.tex.
+
+%% Elsevier CRC generally uses a numbered reference style
+%% For this, the conventions of elsarticle-template-num.tex should be followed (included below)
+%% If using BibTeX, use the style file elsarticle-num.bst
+
+%% End of ecrc-specific commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The amssymb package provides various useful mathematical symbols
+
+\usepackage{amssymb}
+%% The amsthm package provides extended theorem environments
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{comment}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers after \end{frontmatter}.
+%% \usepackage{lineno}
+
+%% natbib.sty is loaded by default. However, natbib options can be
+%% provided with \biboptions{...} command. Following options are
+%% valid:
+
+%%   round  -  round parentheses are used (default)
+%%   square -  square brackets are used   [option]
+%%   curly  -  curly braces are used      {option}
+%%   angle  -  angle brackets are used    <option>
+%%   semicolon  -  multiple citations separated by semi-colon
+%%   colon  - same as semicolon, an earlier confusion
+%%   comma  -  separated by comma
+%%   numbers-  selects numerical citations
+%%   super  -  numerical citations as superscripts
+%%   sort   -  sorts multiple citations according to order in ref. list
+%%   sort&compress   -  like sort, but also compresses numerical citations
+%%   compress - compresses without sorting
+%%
+%% \biboptions{authoryear}
+
+% \biboptions{}
+
+% if you have landscape tables
+\usepackage[figuresright]{rotating}
+%\usepackage{harvard}
+% put your own definitions here:x
+%   \newcommand{\cZ}{\cal{Z}}
+%   \newtheorem{def}{Definition}[section]
+%   ...
+
+% add words to TeX's hyphenation exception list
+%\hyphenation{author another created financial paper re-commend-ed Post-Script}
+
+% declarations for front matter
+
+%\pagenumbering{gobble}
+
+\begin{document}
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for the associated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for the associated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for the associated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%%
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \address{Address\fnref{label3}}
+%% \fntext[label3]{}
+
+\dochead{\huge{Machine learning course (ML)}}%
+%% Use \dochead if there is an article header, e.g. \dochead{Short communication}
+%% \dochead can also be used to include a conference title, if directed by the editors
+%% e.g. \dochead{17th International Conference on Dynamical Processes in Excited States of Solids}
+
+
+\title{\textbf{Support Vector Machines for Smartphone-Based Human Activity Recognition: A Survey of Recent Approaches}}
+
+%% use optional labels to link authors explicitly to addresses:
+%% \author[label1,label2]{<author name>}
+%% \address[label1]{<address>}
+%% \address[label2]{<address>}
+
+
+
+\author{Ștefan-Lucian Grămadă}
+
+\address{Department of Computer Science, Babe\c s-Bolyai University\\1, M. Kog\u alniceanu Street, 400084, Cluj-Napoca, Romania\\E-mail: stefan.gramada@stud.ubbcluj.ro}
+
+
+\end{frontmatter}
+
+
+
+%%
+%% Start line numbering here if you want
+%%
+% \linenumbers
+
+%% main text
+
+%\enlargethispage{-7mm}
+
+\section*{Topic description and relevance}\label{topic}
+
+Human activity recognition (HAR) is the task of automatically identifying what a person is doing, such as walking, climbing stairs, sitting or lying down, from the signals of sensors carried or worn by that person. Modern smartphones embed a triaxial accelerometer and gyroscope, so they can act as unobtrusive, low-cost activity monitors without any extra hardware. The usual pipeline splits the raw inertial signals into short windows, computes time- and frequency-domain features for every window and feeds the resulting feature vectors to a supervised classifier. The public UCI HAR dataset, recorded from 30 subjects carrying a waist-mounted smartphone and described by 561 such features, has become the reference benchmark for this pipeline \citep{anguita2013}.
+
+The topic is relevant from a practical perspective because activity information underpins many applications: ambient assisted living and remote monitoring of elderly people, fall and inactivity detection, rehabilitation and chronic disease management, fitness tracking and context-aware mobile services. These applications run on battery-powered devices with limited computing resources, so the classifier has to be accurate, robust to differences between users and phone placements, and cheap enough to run on the device itself \citep{anguita2012,garciagonzalez2020}.
+
+From a theoretical perspective, support vector machines (SVMs) are a natural choice for this problem. An SVM learns the decision boundary with the largest margin between classes and, through kernel functions, can separate data that is not linearly separable in the original feature space \citep{cortes1995}. Margin maximisation gives good generalisation on high-dimensional feature vectors such as the 561 HAR features, and multiclass problems can be handled with one-vs-one or one-vs-all decompositions. A recent survey reviews these properties together with the open challenges of SVM classification, including multiclass extensions, large and unbalanced datasets and the selection of kernel hyperparameters \citep{cervantes2020}.
+
+SVMs have played a central role in smartphone HAR research. The authors of the UCI HAR dataset proposed a hardware-friendly multiclass SVM that uses fixed-point arithmetic to reduce the computational cost on the phone while keeping accuracy close to that of a standard SVM \citep{anguita2012}, and used a multiclass SVM to report the reference results on the dataset \citep{anguita2013}. Later work extended the approach to postural transitions and unknown activities by combining the probabilistic outputs of consecutive SVM predictions with heuristic filtering \citep{reyesortiz2016}. More recent studies improve SVM-based HAR through feature selection, using hybrid filter--wrapper schemes \citep{ahmed2020} or metaheuristic optimisers \citep{helmi2021}, and evaluate SVMs on real-life data collected with free phone orientation and placement \citep{garciagonzalez2020}. Deep learning models such as convolutional networks have since been proposed for the same task and are usually compared against SVM baselines \citep{ronao2016}.
+
+The report will survey these approaches, compare their methodology, datasets and experimental results, and critically discuss the trade-offs between accuracy, computational cost and robustness of SVM-based HAR, including how SVMs compare with deep learning alternatives. It will also motivate the software project, in which a multiclass SVM will be implemented from scratch and with an existing library and evaluated on the UCI HAR dataset.
+
+
+
+\footnotesize{
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+} 
+
+\end{document}
+
+%%
+%% End of file `Sample Paper.tex'.
