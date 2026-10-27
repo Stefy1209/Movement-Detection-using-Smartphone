@@ -1,0 +1,175 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{geometry}
+\usepackage{url}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+
+\linespread{1}
+
+\geometry{a4paper,top=3cm,left=3cm,right=2.5cm,bottom=2cm}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=black,citecolor=blue}
+
+
+\title{\textbf{Laboratory assignment} \\[1ex] \large \textbf{Component} (1) -- Definition of the learning task}
+
+\author{\textbf{Authors:} Ștefan-Lucian Grămadă\\ \textbf{Group:} ICA1}
+
+\begin{document}
+
+\maketitle
+
+\section{Learning task: recognition of human activities from smartphone sensor data}
+
+The software project addresses a single learning task, \emph{supervised multi-class classification}, defined on the \emph{Human Activity Recognition Using Smartphones} data set from the UCI Machine Learning Repository~\cite{anguita2013}. The conventional ML technique chosen for this task is the Support Vector Machine~\cite{cortes1995}.
+
+\subsection{Problem definition}
+
+Smartphones carry inertial sensors, an accelerometer and a gyroscope, that record how the body of the person carrying the phone moves. The problem is to \textbf{automatically recognise the physical activity that a person is performing}, using only the signals recorded by a smartphone worn on the waist. The activity must be identified from a short time window of sensor readings of 2.56 seconds as one of six daily activities: \emph{walking}, \emph{walking upstairs}, \emph{walking downstairs}, \emph{sitting}, \emph{standing} and \emph{laying}.
+
+Recognising these activities is useful in ambient assisted living and remote health monitoring, as well as in context-aware mobile applications~\cite{anguita2012}. Examples include supervising elderly or disabled people, measuring the level of physical activity and detecting long periods of inactivity.
+
+\subsection{Problem specification}
+
+\subsubsection{Input data}
+
+The input of the learning system is the UCI HAR data set~\cite{anguita2013}, a labelled tabular data set with \textbf{10\,299 instances}, each characterised by \textbf{561 predefined numerical features}. The data is provided already split by volunteer into a training set and a test set:
+
+\begin{itemize}
+  \item \texttt{train/X\_train.txt} and \texttt{test/X\_test.txt} -- the feature vectors, one instance per line, each given as 561 space-separated real values;
+  \item \texttt{train/y\_train.txt} and \texttt{test/y\_test.txt} -- the activity label of each instance, an integer from 1 to 6;
+  \item \texttt{train/subject\_train.txt} and \texttt{test/subject\_test.txt} -- the identifier of the volunteer who performed the activity, an integer from 1 to 30;
+  \item \texttt{features.txt} -- the names of the 561 features;
+  \item \texttt{activity\_labels.txt} -- the mapping between label identifiers and activity names.
+\end{itemize}
+
+The raw inertial signals, stored in the \texttt{Inertial Signals/} folders, are also distributed with the data set, but they are not used, since the project requires a data set with features that have already been extracted.
+
+For the learner, the input therefore consists of a set of $n$ labelled examples
+\[
+  D = \{(x_i, y_i)\}_{i=1}^{n}, \qquad x_i \in \mathbb{R}^{561}, \quad y_i \in C = \{1, 2, \dots, 6\},
+\]
+together with the volunteer identifier $s_i \in \{1,\dots,30\}$ of every example, which is used only to split the data, never as a feature.
+
+\subsubsection{Description of the input data}
+
+The data were collected by Anguita et al.~\cite{anguita2013} from \textbf{30 volunteers} aged 19--48 years. Each volunteer performed the six activities while wearing a Samsung Galaxy S~II smartphone on the waist. The embedded accelerometer and gyroscope recorded 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50\,Hz, and the experiments were video-recorded so that the activities could be labelled manually.
+
+The signals were pre-processed with noise filters and split into fixed-width sliding windows of 2.56\,s with 50\% overlap, so that each window contains 128 readings. The acceleration was separated, with a low-pass filter, into a body component and a gravity component. From each window, a vector of 561 features was computed in the time domain and in the frequency domain, the latter obtained with the Fast Fourier Transform~\cite{anguita2013}. The features are derived from the following signals: body and gravity acceleration, body angular velocity, their jerk signals, which are their time derivatives, and the Euclidean magnitudes of all of them. For every signal, statistics such as the mean, standard deviation, median absolute deviation, maximum, minimum, signal magnitude area, energy, interquartile range, entropy, autoregression coefficients, correlation, skewness, kurtosis, frequency-band energies and angles between vectors were computed. A feature is named after the signal and the statistic, e.g., \texttt{tBodyAcc-mean()-X} or \texttt{fBodyGyro-energy()-Z}.
+
+Table~\ref{tab:data} summarises the data set and Table~\ref{tab:classes} gives the class distribution.
+
+\begin{table}[h]
+\centering
+\caption{Main characteristics of the UCI HAR data set.}
+\label{tab:data}
+\begin{tabular}{ll}
+\toprule
+Characteristic & Value \\
+\midrule
+Number of instances & 10\,299 \\
+Training instances & 7\,352 \\
+Test instances & 2\,947 \\
+Number of features & 561 \\
+Feature type & numerical, real-valued \\
+Feature range & normalised to $[-1, 1]$ \\
+Number of classes & 6 \\
+Volunteers & 30 \\
+Volunteers in the training set & 21 \\
+Volunteers in the test set & 9 \\
+Missing values & none \\
+Instance & one 2.56\,s window \\
+Readings per window & 128, sampled at 50\,Hz \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Class distribution of the UCI HAR data set.}
+\label{tab:classes}
+\begin{tabular}{clrrr}
+\toprule
+Label & Activity & Training & Test & Total \\
+\midrule
+1 & WALKING & 1\,226 & 496 & 1\,722 \\
+2 & WALKING\_UPSTAIRS & 1\,073 & 471 & 1\,544 \\
+3 & WALKING\_DOWNSTAIRS & 986 & 420 & 1\,406 \\
+4 & SITTING & 1\,286 & 491 & 1\,777 \\
+5 & STANDING & 1\,374 & 532 & 1\,906 \\
+6 & LAYING & 1\,407 & 537 & 1\,944 \\
+\midrule
+ & Total & 7\,352 & 2\,947 & 10\,299 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The activities fall into two groups: the \emph{dynamic} activities, which are the three walking activities, and the \emph{static} postures, which are sitting, standing and laying. The hardest distinctions are expected inside each group, especially between sitting and standing, whose sensor signals are very similar.
+
+\subsubsection{Preconditions}
+
+The following conditions must hold for the input data:
+\begin{itemize}[itemsep=2pt]
+  \item every instance is a vector $x \in \mathbb{R}^{561}$ with all 561 features present, given in the same order as in \texttt{features.txt};
+  \item every feature value lies in the interval $[-1, 1]$;
+  \item every training instance has exactly one label $y \in \{1,\dots,6\}$, and the label is correct;
+  \item training and test instances are assumed to come from the same distribution;
+  \item the data used for evaluating the model are disjoint from the data used for training it. To avoid data leakage, the split is made by volunteer: all windows of a volunteer belong either to the training data or to the test data, never to both, as in the official 21/9 split.
+\end{itemize}
+
+\subsubsection{Output data}
+
+The output of the learning process is a \textbf{trained classifier} $h : \mathbb{R}^{561} \rightarrow C$, an SVM model that approximates the unknown target function $f$ which maps every feature vector to the activity actually performed.
+
+When applied to a new instance $x$, the classifier outputs:
+\begin{itemize}[itemsep=2pt]
+  \item the predicted activity label $\hat{y} = h(x) \in \{1,\dots,6\}$;
+  \item a score for each of the six classes, such as the SVM decision values, from which the predicted label is the class with the highest score; the scores are needed to compute ROC and precision--recall curves.
+\end{itemize}
+
+For the evaluation, the system also outputs the confusion matrix and the values of the performance measures presented in Section~\ref{sec:tpe}, computed on the test data in every cross-validation fold, together with their mean, standard deviation and 95\% confidence interval.
+
+\subsubsection{Postconditions}
+
+\begin{itemize}[itemsep=2pt]
+  \item every input instance receives exactly one predicted label $\hat{y} \in \{1,\dots,6\}$, the class with the highest score, i.e. $\hat{y} = \arg\max_{c \in C} \mathrm{score}_c(x)$;
+  \item the prediction is deterministic: the same input instance and the same trained model always produce the same output;
+  \item the classifier generalises to unseen people: on volunteers that were not used for training, the predicted labels should agree with the true labels as often as possible, i.e. $h(x) \approx f(x)$; this is measured by the performance measures from Section~\ref{sec:tpe};
+  \item all performance measures take values in $[0, 1]$ and are computed only on data that was not used for training or for tuning the hyperparameters.
+\end{itemize}
+
+\subsection{Specification of the learning task (T, P, E)}
+\label{sec:tpe}
+
+\paragraph{Task (T).} Classify a 2.56-second window of smartphone sensor data, described by its 561-feature vector $x \in \mathbb{R}^{561}$, into one of the six activities $C = \{$WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING$\}$. Formally, the target function to be learned is
+\[
+  f : \mathbb{R}^{561} \rightarrow C, \qquad f(x) = \text{the activity performed during the window described by } x,
+\]
+and the learner must find a hypothesis $h$, an SVM classifier, such that $h(x) \approx f(x)$. This is a supervised, multi-class classification task with 6 classes.
+
+\paragraph{Performance measure (P).} The ability of the classifier to label correctly windows recorded from volunteers it has not seen during training. It is measured on the test data with:
+\begin{itemize}[itemsep=2pt]
+  \item \textbf{accuracy} -- the fraction of correctly classified instances, $acc = \frac{1}{n}\sum_{i=1}^{n} [h(x_i) = y_i]$; this is the main measure;
+  \item \textbf{precision}, \textbf{recall}, also called sensitivity, and \textbf{F-measure} -- computed from the $6 \times 6$ confusion matrix for each class against all the other classes, and aggregated over the classes as a macro average and as a weighted average;
+  \item \textbf{specificity}, \textbf{AUC}, the area under the ROC curve, and \textbf{AUPRC}, the area under the precision--recall curve, computed for each class with a one-vs-rest approach from the class scores and averaged over the classes.
+\end{itemize}
+All measures take values in $[0,1]$, and higher values are better. Since a single train/test split gives only one estimate, the performance is evaluated with $k$-fold cross-validation, using $k = 10$ folds. The folds are formed by volunteer, so that the windows of a person are never used both for training and for testing. The result is reported as the mean performance over the folds, with its standard deviation and the 95\% confidence interval. The hyperparameters, such as the regularisation parameter $C$ and the kernel parameters, are tuned only on the training folds with nested cross-validation, so that they are never chosen using the test data. The results are also reported on the official test set of 9 volunteers, so that they can be compared with the literature.
+
+\paragraph{Training experience (E).} A set of windows labelled by a teacher: the pairs $(x_i, y_i)$ from the training data, where $x_i$ is the 561-feature vector of a window and $y_i$ is the activity performed during that window, labelled manually from the video recordings of the experiments~\cite{anguita2013}. The experience is:
+\begin{itemize}[itemsep=2pt]
+  \item \emph{direct}: each training example contains the correct output of the target function for that input;
+  \item \emph{with a teacher}: the labels are provided by a supervisor, as in supervised learning, and the learner does not choose its examples;
+  \item \emph{representative} for the performance goal: it covers all six activities in roughly equal proportions and contains several people of different ages, so that the learned classifier can generalise to new people. In each cross-validation fold, the experience is formed by the windows of the training volunteers. In the official split, these are 7\,352 instances from 21 volunteers.
+\end{itemize}
+
+\bibliographystyle{alpha}
+\bibliography{biblio}
+
+\end{document}
