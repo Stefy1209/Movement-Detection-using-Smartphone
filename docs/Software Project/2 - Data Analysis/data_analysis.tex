@@ -142,14 +142,14 @@ Group & Features \\
 \end{figure}
 
 \begin{itemize}
-  \item Median $|r|$: Pearson 0.38, Spearman 0.58.
+  \item Median $|r|$ = Pearson 0.38, Spearman 0.58.
   \item 19 groups of identical features, 21 redundant copies: \autoref{tab:identical}.
-  \item $|\rho| \geq 0.8$ and $|r| < 0.5$: 3\,983 pairs; high $\rho$ mainly from the static vs.\ dynamic split; within dynamic activities, median $|\rho| = 0.23$; e.g.\ last row of \autoref{tab:pairs}, \autoref{fig:pearsonspearman}.
+  \item $|\rho| \geq 0.8$ and $|r| < 0.5$: 3\,983 pairs; e.g.\ last row of \autoref{tab:pairs}, \autoref{fig:pearsonspearman}.
   \item \feat{std}, \feat{mad}, \feat{iqr}, \feat{max} of the same signal: strongly correlated. Example, Pearson $r$:
   \begin{itemize}
-    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-mad()-X}: 0.999
-    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-iqr()-X}: 0.981
-    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-max()-X}: 0.981
+    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-mad()-X} = 0.999
+    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-iqr()-X} = 0.981
+    \item \feat{tBodyAcc-std()-X} -- \feat{tBodyAcc-max()-X} = 0.981
   \end{itemize}
 \end{itemize}
 
@@ -206,9 +206,8 @@ Most dependent & $V$ & Least dependent & $V$ \\
 \end{figure}
 
 \begin{itemize}
-  \item Uncorrelated does not mean independent: 19\,605 pairs have $|r| < 0.1$ and $|\rho| < 0.1$; the $\chi^2$ test finds 18\,271 of them dependent, i.e.\ 93.2\%.
+  \item 19\,605 pairs have $|r| < 0.1$ and $|\rho| < 0.1$, but the $\chi^2$ test finds 18\,271 of them dependent, i.e.\ 93.2\%.
   \item Example, \autoref{fig:uncorrelated}:\\ \feat{tBodyGyroJerk-mean()-X} and \feat{fBodyGyro-bandsEnergy()-57,64\_1}: $r = 0.057$, $\rho = 0.010$, $V = 0.580$.
-  \item Windows overlap by 50\%: instances not independent, p-values optimistic.
 \end{itemize}
 
 \FloatBarrier
@@ -420,6 +419,7 @@ Interpretation:
     \item Laying, the walking activities and the other static activities form distinct regions.
     \item Sitting and standing share one region, partly separated.
     \item Walking splits into many small, tight clusters.
+    \item Laying is the most distinguishable group.
   \end{itemize}
 \end{itemize}
 
