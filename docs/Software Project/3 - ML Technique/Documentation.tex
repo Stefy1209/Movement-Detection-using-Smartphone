@@ -68,7 +68,7 @@ Each pair $(w_c, b_c)$ is learned from $D_c = \{(x_i, y_i^{(c)})\}_{i=1}^{n}$, $
 \[
   \min_{w, b}\; \frac{\lambda}{2}\lVert w \rVert^2 + \frac{1}{n}\sum_{i=1}^{n} \max\!\left(0,\; 1 - y_i (w^\top x_i + b)\right).
 \]
-The minimisation uses stochastic sub-gradient descent (Pegasos):
+The minimisation uses stochastic sub-gradient descent (Pegasos)~\cite{Shalev-Shwartz2011}:
 
 \begin{center}
 \begin{tabular}{r@{\hspace{1em}}l}
