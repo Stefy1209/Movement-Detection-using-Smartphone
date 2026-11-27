@@ -46,27 +46,27 @@ where $f(x)$ is the activity performed in the window $x$. For one-vs-rest, for e
 
 For each $c \in \mathcal{Y}$, $f_c$ is approximated by a linear classifier:
 \[
-  h_c(x) = \operatorname{sign}\!\left(w_c^\top x + b_c\right) \approx f_c(x), \qquad w_c \in \mathbb{R}^{561}, \quad b_c \in \mathbb{R}.
+  h_c(x) = \operatorname{sign}\!\left(w_c^\top x\right) \approx f_c(x), \qquad w_c \in \mathbb{R}^{561}.
 \]
 The target function $f$ is approximated by the class with the highest score:
 \[
-  h(x) = \arg\max_{c \in \mathcal{Y}} \left(w_c^\top x + b_c\right) \approx f(x).
+  h(x) = \arg\max_{c \in \mathcal{Y}} w_c^\top x \approx f(x).
 \]
 
 \subsubsection{Representation of the learned function}
 
-The learned function is represented by six hyperplanes $w_c^\top x + b_c = 0$, stored as:
+The learned function is represented by six hyperplanes $w_c^\top x = 0$, stored as:
 \[
-  W = \left[w_1, \dots, w_6\right]^\top \in \mathbb{R}^{6 \times 561}, \qquad b \in \mathbb{R}^{6}, \qquad
-  h(x) = \arg\max_{c \in \mathcal{Y}} \left(W x + b\right)_c .
+  W = \left[w_1, \dots, w_6\right]^\top \in \mathbb{R}^{6 \times 561}, \qquad
+  h(x) = \arg\max_{c \in \mathcal{Y}} \left(W x\right)_c .
 \]
-Although $w_c = \sum_i \alpha_i^{(c)} y_i^{(c)} x_i$ is a combination of support vectors, for a linear SVM it is computed explicitly, so only $W$ and $b$ are stored.
+Although $w_c = \sum_i \alpha_i^{(c)} y_i^{(c)} x_i$ is a combination of support vectors, for a linear SVM it is computed explicitly, so only $W$ is stored.
 
 \subsubsection{Learning algorithm}
 
-Each pair $(w_c, b_c)$ is learned from $D_c = \{(x_i, y_i^{(c)})\}_{i=1}^{n}$, $y_i^{(c)} = f_c(x_i)$, by minimising the soft-margin objective (hinge loss), with $\lambda = 1/(nC)$:
+Each $w_c$ is learned from $D_c = \{(x_i, y_i^{(c)})\}_{i=1}^{n}$, $y_i^{(c)} = f_c(x_i)$, by minimising the soft-margin objective (hinge loss), with $\lambda = 1/(nC)$:
 \[
-  \min_{w, b}\; \frac{\lambda}{2}\lVert w \rVert^2 + \frac{1}{n}\sum_{i=1}^{n} \max\!\left(0,\; 1 - y_i (w^\top x_i + b)\right).
+  \min_{w}\; \frac{\lambda}{2}\lVert w \rVert^2 + \frac{1}{n}\sum_{i=1}^{n} \max\!\left(0,\; 1 - y_i\, w^\top x_i\right).
 \]
 The minimisation uses stochastic sub-gradient descent (Pegasos)~\cite{Shalev-Shwartz2011}:
 
@@ -76,20 +76,18 @@ The minimisation uses stochastic sub-gradient descent (Pegasos)~\cite{Shalev-Shw
 \multicolumn{2}{l}{\textbf{Algorithm 1:} Pegasos for class $c$} \\
 \midrule
  & \textbf{Input:} $D_c$, $\lambda$, number of iterations $T$ \\
- & \textbf{Output:} $w_c$, $b_c$ \\
+ & \textbf{Output:} $w_c$ \\
 1: & $w \leftarrow 0$ \\
-2: & $b \leftarrow 0$ \\
-3: & \textbf{for} $t = 1$ \textbf{to} $T$ \textbf{do} \\
-4: & \quad pick $i$ uniformly at random from $\{1, \dots, n\}$ \\
-5: & \quad $\eta_t \leftarrow 1/(\lambda t)$ \\
-6: & \quad \textbf{if} $y_i (w^\top x_i + b) < 1$ \textbf{then} \\
-7: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w + \eta_t y_i x_i$ \\
-8: & \quad\quad $b \leftarrow b + \eta_t y_i$ \\
-9: & \quad \textbf{else} \\
-10: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w$ \\
-11: & \quad \textbf{end if} \\
-12: & \textbf{end for} \\
-13: & \textbf{return} $w_c \leftarrow w$, $b_c \leftarrow b$ \\
+2: & \textbf{for} $t = 1$ \textbf{to} $T$ \textbf{do} \\
+3: & \quad pick $i$ uniformly at random from $\{1, \dots, n\}$ \\
+4: & \quad $\eta_t \leftarrow 1/(\lambda t)$ \\
+5: & \quad \textbf{if} $y_i\, w^\top x_i < 1$ \textbf{then} \\
+6: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w + \eta_t y_i x_i$ \\
+7: & \quad \textbf{else} \\
+8: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w$ \\
+9: & \quad \textbf{end if} \\
+10: & \textbf{end for} \\
+11: & \textbf{return} $w_c \leftarrow w$ \\
 \bottomrule
 \end{tabular}
 \end{center}
