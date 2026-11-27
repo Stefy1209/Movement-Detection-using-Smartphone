@@ -1,0 +1,100 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{geometry}
+\usepackage{url}
+\usepackage{color}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+
+\linespread{1}
+
+\geometry{a4paper,top=3cm,left=3cm,right=2.5cm,bottom=2cm}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=black,citecolor=blue}
+
+
+\title{\textbf{Laboratory assignment} \\[1ex] \large \textbf{Component 3}}
+
+\author{\textbf{Author: Ștefan-Lucian Grămadă}}
+
+\begin{document}
+
+\maketitle
+
+\section{Used ML Technique}
+
+\subsection{Brief description of the employed ML technique}
+
+A Support Vector Machine (SVM), also known as Support Vector Network~\cite{cortes1995}, is a supervised max-margin eager model used for classification and regression. Its main idea is to find the hyperplane that separates two classes with the largest margin, i.e.\ the largest distance to the closest training points, called support vectors. It is a binary classifier by nature, but it can be extended to multi-class classification using one-vs-rest or one-vs-one. A hard-margin SVM requires linearly separable data, while a soft-margin SVM allows some points to violate the margin through slack variables, penalised by the parameter $C$. Non-linear SVMs use the kernel trick, replacing the dot product with a kernel $K(x_i, x_j) = \phi(x_i) \cdot \phi(x_j)$, without computing the mapping $\phi$ explicitly. In this project, a linear soft-margin SVM with the one-vs-rest strategy is used.
+
+\subsection{Design of the learning task}
+
+\subsubsection{Target function to be learned}
+
+\[
+  f : X \rightarrow \mathcal{Y}, \qquad X = [-1, 1]^{561}, \quad \mathcal{Y} = \{1, \dots, 6\},
+\]
+where $f(x)$ is the activity performed in the window $x$. For one-vs-rest, for each $c \in \mathcal{Y}$:
+\[
+  f_c : X \rightarrow \{-1, +1\}, \qquad
+  f_c(x) = \begin{cases} +1, & f(x) = c,\\ -1, & \text{otherwise}. \end{cases}
+\]
+
+\subsubsection{Learning hypothesis}
+
+For each $c \in \mathcal{Y}$, $f_c$ is approximated by a linear classifier:
+\[
+  h_c(x) = \operatorname{sign}\!\left(w_c^\top x\right) \approx f_c(x), \qquad w_c \in \mathbb{R}^{561}.
+\]
+The target function $f$ is approximated by the class with the highest score:
+\[
+  h(x) = \arg\max_{c \in \mathcal{Y}} w_c^\top x \approx f(x).
+\]
+
+\subsubsection{Representation of the learned function}
+
+The learned function is represented by six hyperplanes $w_c^\top x = 0$, stored as:
+\[
+  W = \left[w_1, \dots, w_6\right]^\top \in \mathbb{R}^{6 \times 561}, \qquad
+  h(x) = \arg\max_{c \in \mathcal{Y}} \left(W x\right)_c .
+\]
+Although $w_c = \sum_i \alpha_i^{(c)} y_i^{(c)} x_i$ is a combination of support vectors, for a linear SVM it is computed explicitly, so only $W$ is stored.
+
+\subsubsection{Learning algorithm}
+
+Each $w_c$ is learned from $D_c = \{(x_i, y_i^{(c)})\}_{i=1}^{n}$, $y_i^{(c)} = f_c(x_i)$, by minimising the soft-margin objective (hinge loss), with $\lambda = 1/(nC)$:
+\[
+  \min_{w}\; \frac{\lambda}{2}\lVert w \rVert^2 + \frac{1}{n}\sum_{i=1}^{n} \max\!\left(0,\; 1 - y_i\, w^\top x_i\right).
+\]
+The minimisation uses stochastic sub-gradient descent (Pegasos)~\cite{Shalev-Shwartz2011}:
+
+\begin{center}
+\begin{tabular}{r@{\hspace{1em}}l}
+\toprule
+\multicolumn{2}{l}{\textbf{Algorithm 1:} Pegasos for class $c$} \\
+\midrule
+ & \textbf{Input:} $D_c$, $\lambda$, number of iterations $T$ \\
+ & \textbf{Output:} $w_c$ \\
+1: & $w \leftarrow 0$ \\
+2: & \textbf{for} $t = 1$ \textbf{to} $T$ \textbf{do} \\
+3: & \quad pick $i$ uniformly at random from $\{1, \dots, n\}$ \\
+4: & \quad $\eta_t \leftarrow 1/(\lambda t)$ \\
+5: & \quad \textbf{if} $y_i\, w^\top x_i < 1$ \textbf{then} \\
+6: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w + \eta_t y_i x_i$ \\
+7: & \quad \textbf{else} \\
+8: & \quad\quad $w \leftarrow (1 - \eta_t \lambda)\, w$ \\
+9: & \quad \textbf{end if} \\
+10: & \textbf{end for} \\
+11: & \textbf{return} $w_c \leftarrow w$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is repeated for every $c \in \mathcal{Y}$, and $C$ is selected by nested cross-validation on the training folds.
+
+\bibliographystyle{alpha}
+\bibliography{biblio}
+
+\end{document}
