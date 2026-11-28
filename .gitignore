@@ -332,3 +332,5 @@ TSWLatexianTemp*
 
 # Generated CSV files (see src/Data_analysis.ipynb)
 data/
+__pycache__/
+*.py[cod]
